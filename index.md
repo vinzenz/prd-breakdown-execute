@@ -35,20 +35,22 @@ PRD Breakdown Execute is a **Claude Code skills framework** that demonstrates au
 
 The framework's power comes from **context fork** - a Claude Code feature that runs skills in completely isolated execution contexts:
 
-```
+<div class="diagram">
+<pre>
 ┌─────────────────────────────────────────────────────────────────┐
 │  Main Session                                                    │
 │  ┌─────────────────────────────────────────────────────────────┐│
 │  │  /execute                                                    ││
 │  │  ┌───────────────────┐  ┌───────────────────┐               ││
 │  │  │ Task A (fork)     │  │ Task B (fork)     │  ← Parallel   ││
-│  │  │ - Fresh context   │  │ - Fresh context   │               ││
-│  │  │ - Own worktree    │  │ - Own worktree    │               ││
-│  │  │ - No interference │  │ - No interference │               ││
+│  │  │ • Fresh context   │  │ • Fresh context   │               ││
+│  │  │ • Own worktree    │  │ • Own worktree    │               ││
+│  │  │ • No interference │  │ • No interference │               ││
 │  │  └───────────────────┘  └───────────────────┘               ││
 │  └─────────────────────────────────────────────────────────────┘│
 └─────────────────────────────────────────────────────────────────┘
-```
+</pre>
+</div>
 
 This enables **true parallel execution** where multiple tasks run simultaneously without context pollution.
 

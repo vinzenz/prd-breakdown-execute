@@ -32,7 +32,8 @@ PRD Breakdown Execute solves these through:
 
 ## How It Works
 
-```
+<div class="diagram">
+<pre>
 ┌──────────────────────────────────────────────────────────────┐
 │                    PRD Breakdown Execute                      │
 ├──────────────────────────────────────────────────────────────┤
@@ -48,7 +49,8 @@ PRD Breakdown Execute solves these through:
 │   Tech stack           Dependencies          Verification    │
 │                                                               │
 └──────────────────────────────────────────────────────────────┘
-```
+</pre>
+</div>
 
 ## Key Concepts
 

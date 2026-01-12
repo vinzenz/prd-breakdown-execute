@@ -51,7 +51,8 @@ When invoked, this skill:
 3. **Runs independently** - Other tasks don't see its work
 4. **Returns results** - Output goes back to orchestrator
 
-```
+<div class="diagram">
+<pre>
 ┌─────────────────────────────────────────────────────────┐
 │  Orchestrator (main context)                            │
 │                                                         │
@@ -61,9 +62,9 @@ When invoked, this skill:
 │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐       │
 │  │ Task Fork 1 │ │ Task Fork 2 │ │ Task Fork 3 │       │
 │  │             │ │             │ │             │       │
-│  │ - Empty ctx │ │ - Empty ctx │ │ - Empty ctx │       │
-│  │ - Task XML  │ │ - Task XML  │ │ - Task XML  │       │
-│  │ - Tools     │ │ - Tools     │ │ - Tools     │       │
+│  │ • Empty ctx │ │ • Empty ctx │ │ • Empty ctx │       │
+│  │ • Task XML  │ │ • Task XML  │ │ • Task XML  │       │
+│  │ • Tools     │ │ • Tools     │ │ • Tools     │       │
 │  └─────────────┘ └─────────────┘ └─────────────┘       │
 │          │              │              │                │
 │          └──────────────┴──────────────┘                │
@@ -71,7 +72,8 @@ When invoked, this skill:
 │                         ▼                               │
 │              Results merged back                        │
 └─────────────────────────────────────────────────────────┘
-```
+</pre>
+</div>
 
 ## Benefits
 
@@ -79,15 +81,17 @@ When invoked, this skill:
 
 Without context fork, tasks must run sequentially because each task's context would influence the next. With forked contexts:
 
-```
-Sequential (no fork):    Parallel (with fork):
+<div class="diagram-blueprint">
+<pre>
+Sequential (no fork):        Parallel (with fork):
 
-Task A ████████          Task A ████████
-       Task B ████████   Task B ████████
-              Task C     Task C ████████
+Task A ████████████          Task A ████████████
+         Task B ████████████   Task B ████████████
+                   Task C      Task C ████████████
 
-Time: 24 units           Time: 8 units
-```
+Time: 24 units               Time: 8 units
+</pre>
+</div>
 
 ### No Cross-Contamination
 
@@ -105,21 +109,23 @@ No risk of Task A's auth code leaking into Task B's payment implementation.
 
 Verification runs in its own fork:
 
-```
+<div class="diagram">
+<pre>
 ┌─────────────────────────────────────────────┐
 │ execute-task (fork)                         │
-│   - Writes implementation                   │
-│   - Creates tests                           │
+│   • Writes implementation                   │
+│   • Creates tests                           │
 │       │                                     │
 │       ▼                                     │
 │ ┌───────────────────────────────────┐       │
 │ │ execute-verify (fork)             │       │
-│ │   - Fresh context                 │       │
-│ │   - Runs verification commands    │       │
-│ │   - No implementation bias        │       │
+│ │   • Fresh context                 │       │
+│ │   • Runs verification commands    │       │
+│ │   • No implementation bias        │       │
 │ └───────────────────────────────────┘       │
 └─────────────────────────────────────────────┘
-```
+</pre>
+</div>
 
 The verifier doesn't know what the implementer was "trying" to do - it just checks if the code works.
 
@@ -131,28 +137,32 @@ If Task A fails:
 - Task A retries with error feedback
 - No cascade failures
 
-```
+<div class="diagram">
+<pre>
 ┌─────────┐  ┌─────────┐  ┌─────────┐
 │ Task A  │  │ Task B  │  │ Task C  │
 │  FAIL   │  │  PASS   │  │  PASS   │
-│  ↓      │  │         │  │         │
-│ Retry   │  │         │  │         │
+│    ↓    │  │    ✓    │  │    ✓    │
+│  Retry  │  │         │  │         │
 │  PASS   │  │         │  │         │
 └─────────┘  └─────────┘  └─────────┘
-```
+</pre>
+</div>
 
 ## Fork Hierarchy
 
 The execute pipeline uses nested forks:
 
-```
+<div class="diagram-flow">
+<pre>
 /execute (fork)
     └─► execute-layer (fork)
             └─► execute-batch (fork)
                     ├─► execute-task (fork)
                     │       └─► execute-verify (fork)
                     └─► execute-merge (fork)
-```
+</pre>
+</div>
 
 Each level manages its own scope:
 - **/execute**: Overall orchestration
