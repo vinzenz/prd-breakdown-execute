@@ -204,6 +204,58 @@ When a skill changes:
 
 ---
 
+## GitHub Pages Website
+
+This project has a documentation website on the `gh-pages` branch.
+
+**URL:** https://YOUR_USERNAME.github.io/prd-breakdown-execute/
+
+### Updating the Website
+
+When documentation changes on `main`, the `gh-pages` branch should be updated:
+
+1. **Switch to gh-pages branch:**
+   ```bash
+   git checkout gh-pages
+   ```
+
+2. **Update documentation pages:**
+   - Files are in `_docs/` directory
+   - Update corresponding pages to match `docs/` changes
+   - Jekyll structure:
+     - `_docs/introduction/` - Intro docs
+     - `_docs/quickstart/` - Getting started
+     - `_docs/skills/` - Skill reference
+     - `_docs/concepts/` - Core concepts
+     - `_docs/examples/` - Walkthroughs
+     - `_docs/reference/` - Technical reference
+
+3. **Test locally (optional):**
+   ```bash
+   bundle install
+   bundle exec jekyll serve
+   ```
+
+4. **Commit and push:**
+   ```bash
+   git add -A
+   git commit -m "Update docs to match main"
+   git push origin gh-pages
+   ```
+
+5. **Switch back to main:**
+   ```bash
+   git checkout main
+   ```
+
+### Website Tech Stack
+
+- **Theme:** just-the-docs (dark mode)
+- **Generator:** Jekyll
+- **Hosting:** GitHub Pages
+
+---
+
 ## Important Notes
 
 - This repo demonstrates Claude Code features
@@ -211,3 +263,4 @@ When a skill changes:
 - All skills use explicit tool allowlists
 - State management enables resume capability
 - TDD is mandatory in execute-task
+- **Keep gh-pages in sync when docs/ changes**
