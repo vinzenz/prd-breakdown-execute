@@ -2,6 +2,7 @@
 name: execute-verify
 description: Independent verification agent using Haiku. Runs verification commands from task XML and reports pass/fail with actionable feedback.
 context: fork
+agent: verification-runner
 allowed-tools: Read Bash Glob
 model: claude-haiku-4-5
 ---

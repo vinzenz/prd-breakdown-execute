@@ -230,12 +230,77 @@ Duration: 2h 15m
 Retries: 3 (all succeeded)
 ```
 
+### Step 10: Finalize Context (CRD Projects)
+
+If PROJECT.md exists in the project root, update it with implemented features.
+
+**Check for PROJECT.md:**
+```bash
+test -f {project_path}/PROJECT.md
+```
+
+**If exists, update context:**
+
+1. Read all completed task XML files
+2. Extract `<exports>` sections from each task
+3. Map exports to PROJECT.md sections:
+   - `<api endpoint>` → `<api-registry>`
+   - `<interface type="react-component">` → `<features>`
+   - `<interface type="sqlalchemy-model">` → `<schema-registry>`
+
+4. Update PROJECT.md:
+   - Add new features to `<features>` section
+   - Add new endpoints to `<api-registry>` section
+   - Add new models to `<schema-registry>` section
+   - Update `<last-context-hash>` to current HEAD
+   - Update `<last-updated>` timestamp
+
+5. Commit the context update:
+```bash
+git -C {project_path} add PROJECT.md
+git -C {project_path} commit -m "docs: Update PROJECT.md with features from {prd_slug}"
+```
+
+6. Update state with context finalization:
+```json
+{
+  "context_update": {
+    "status": "completed",
+    "project_md_path": "{project_path}/PROJECT.md",
+    "features_added": ["feature-1", "feature-2"],
+    "endpoints_added": ["/api/new-endpoint"],
+    "models_added": ["NewModel"]
+  }
+}
+```
+
+**If no PROJECT.md:**
+Skip context finalization silently (not a CRD-based project).
+
+### Step 11: Complete
+
 Update state:
 ```json
 {
   "status": "completed",
   "completed_at": "{now}"
 }
+```
+
+Output final summary including context update if performed:
+
+```
+Execution Complete: {prd_slug}
+
+Total: 44/44 tasks completed
+Duration: 2h 15m
+
+Context Update:
+  - PROJECT.md updated at {project_path}/PROJECT.md
+  - Features added: 3
+  - Endpoints added: 5
+  - Models added: 2
+  - New context hash: {hash}
 ```
 
 ## State Initialization

@@ -65,7 +65,7 @@ For each task, invoke the Task tool:
 
 ```
 Task(
-  subagent_type: "general-purpose",
+  subagent_type: "task-implementer",
   prompt: <task execution prompt>,
   run_in_background: true,
   description: "Execute task {task_id}"
@@ -94,21 +94,21 @@ In a SINGLE message, call Task tool 3 times:
 
 ```xml
 <Task>
-  <subagent_type>general-purpose</subagent_type>
+  <subagent_type>task-implementer</subagent_type>
   <run_in_background>true</run_in_background>
   <description>Execute task L1-001</description>
   <prompt>Execute /execute-task --task-file .../L1-001-create-enums.xml ...</prompt>
 </Task>
 
 <Task>
-  <subagent_type>general-purpose</subagent_type>
+  <subagent_type>task-implementer</subagent_type>
   <run_in_background>true</run_in_background>
   <description>Execute task L1-002</description>
   <prompt>Execute /execute-task --task-file .../L1-002-create-model.xml ...</prompt>
 </Task>
 
 <Task>
-  <subagent_type>general-purpose</subagent_type>
+  <subagent_type>task-implementer</subagent_type>
   <run_in_background>true</run_in_background>
   <description>Execute task L1-006</description>
   <prompt>Execute /execute-task --task-file .../L1-006-setup-config.xml ...</prompt>

@@ -1,22 +1,38 @@
 ---
 name: breakdown
-description: Break down a PRD into self-contained implementation tasks for LLM execution. Use when you have a PRD file and want to generate executable task files for autonomous implementation.
+description: Break down a PRD or CRD into self-contained implementation tasks for LLM execution. Use when you have a PRD/CRD file and want to generate executable task files for autonomous implementation.
+context: fork
 allowed-tools: Read Glob Grep Write Skill Bash
 model: claude-sonnet-4-5
 ---
 
-# /breakdown - PRD Task Breakdown
+# /breakdown - PRD/CRD Task Breakdown
 
-You are orchestrating the breakdown of a PRD into implementation tasks optimized for autonomous LLM execution.
+You are orchestrating the breakdown of a PRD (Product Requirements Document) or CRD (Change Request Document) into implementation tasks optimized for autonomous LLM execution.
 
 ## Arguments
 
-- `<prd-path>`: Path to PRD index.md file (required)
+- `<input-path>`: Path to PRD index.md or CRD document (required)
 - `--layer <N>`: Only generate tasks for specific layer (optional, 0-4)
 - `--review-only`: Only run review pass on existing tasks (optional)
 - `--output-dir <path>`: Target directory for greenfield projects (overrides default)
-- `--project-path <path>`: Existing project path for brownfield (overrides PRD value)
+- `--project-path <path>`: Existing project path for brownfield/CRD (overrides PRD value)
 - `--auto-setup`: Automatically execute Layer 0 tasks after generation (greenfield only)
+
+## Input Format Detection
+
+The skill automatically detects whether the input is a PRD or CRD:
+
+| Root Element | Format | Description |
+|--------------|--------|-------------|
+| `<prd>` | PRD | Full product requirements (greenfield or brownfield) |
+| `<crd>` | CRD | Change request for existing project |
+
+**CRD handling:**
+- CRDs are always brownfield (no Layer 0)
+- CRDs require `--project-path` or a project with PROJECT.md
+- CRDs use `<impact-analysis>` to scope task generation
+- CRDs typically produce fewer tasks (focused changes)
 
 ## Output Location
 
@@ -32,14 +48,21 @@ Execute these phases in order:
 
 ### Phase 1: Validate Input
 
-1. Read the PRD file at the provided path
-2. Verify it has valid XML structure with `<prd>` root element
-3. Extract the slug from `<meta><slug>` tag
-4. Create output directory: `docs/tasks/{slug}/`
-5. If directory exists, check for existing `.done` markers to resume
+1. Read the input file at the provided path
+2. Detect format by checking root element (`<prd>` or `<crd>`)
+3. Verify valid XML structure
+4. Extract the slug from `<meta><slug>` tag
+5. Create output directory: `docs/tasks/{slug}/`
+6. If directory exists, check for existing `.done` markers to resume
 
-### Phase 2: Analyze PRD
+**For CRD input:**
+- Require `--project-path` argument (CRDs always target existing projects)
+- Verify PROJECT.md exists at `{project-path}/PROJECT.md`
+- Load PROJECT.md context for use in task generation
 
+### Phase 2: Analyze Input
+
+**For PRD:**
 Invoke the `breakdown-analyze-prd` skill with the full PRD content.
 
 Pass the PRD XML content and request structured extraction of:
@@ -51,25 +74,49 @@ Pass the PRD XML content and request structured extraction of:
 - External dependencies
 - Template path if specified
 
+**For CRD:**
+Extract directly from CRD structure:
+- Requirements from `<requirements>` section
+- Acceptance criteria from `<acceptance-criteria>` section
+- Affected files from `<impact-analysis><affected-files>`
+- Affected features from `<impact-analysis><affected-features>`
+- Tech stack from PROJECT.md context
+- Related existing features from `<context><related-features>`
+
+The CRD already contains impact analysis, so less inference is needed.
+
 Save the analysis to `docs/tasks/{slug}/analysis.json`
 
 ### Phase 3: Plan Layers
 
+**For PRD:**
 Invoke the `breakdown-plan-layers` skill with the analysis JSON.
 
-Request organization into 4 layers:
-1. **1-foundation**: Database models, migrations, base config
-2. **2-backend**: API endpoints, services, business logic
-3. **3-frontend**: React components, state management, routing
-4. **4-integration**: Wiring, E2E flows, polish
+Request organization into 4-5 layers:
+1. **0-setup**: Template copy, git init, environment (greenfield only)
+2. **1-foundation**: Database models, migrations, base config
+3. **2-backend**: API endpoints, services, business logic
+4. **3-frontend**: React components, state management, routing
+5. **4-integration**: Wiring, E2E flows, polish
+
+**For CRD:**
+Layer planning is simpler based on `<impact-analysis>`:
+
+- If `<affected-schemas>` has changes: Include Layer 1 (foundation)
+- If `<affected-apis>` has changes: Include Layer 2 (backend)
+- If frontend files in `<affected-files>`: Include Layer 3 (frontend)
+- Always include Layer 4 (integration) for wiring changes together
+
+CRD typically produces 2-3 layers, not 5.
 
 Save the layer plan to `docs/tasks/{slug}/layer_plan.json`
 
 ### Phase 4: Generate Tasks (Per Layer)
 
-Determine layers to process based on project type:
-- **Greenfield**: `[0-setup, 1-foundation, 2-backend, 3-frontend, 4-integration]`
-- **Brownfield**: `[1-foundation, 2-backend, 3-frontend, 4-integration]` (skip Layer 0)
+Determine layers to process based on input type:
+- **PRD Greenfield**: `[0-setup, 1-foundation, 2-backend, 3-frontend, 4-integration]`
+- **PRD Brownfield**: `[1-foundation, 2-backend, 3-frontend, 4-integration]` (skip Layer 0)
+- **CRD**: Only layers identified in Phase 3 based on impact analysis
 
 For each layer in order:
 
@@ -229,7 +276,7 @@ Breakdown complete!
 - 4-integration: 4 tasks
 ```
 
-### Brownfield Project
+### Brownfield Project (PRD)
 ```
 /breakdown docs/prd/new-feature/index.md --project-path /existing/project
 ```
@@ -242,4 +289,55 @@ Existing project: /existing/project
 Skipping Layer 0 (setup)
 
 [continues with layers 1-4...]
+```
+
+### CRD (Change Request)
+```
+/breakdown docs/crd/dark-mode-toggle.md --project-path /existing/project
+```
+
+Output:
+```
+Analyzing CRD: dark-mode-toggle
+Detected: Change Request Document
+Existing project: /existing/project
+Loading PROJECT.md context...
+
+Impact Analysis:
+  - Affected files: 4 (2 modify, 2 create)
+  - Affected features: settings
+  - Breaking changes: none
+
+Planning layers from impact...
+  - Layer 2 (backend): 1 task (API endpoint)
+  - Layer 3 (frontend): 2 tasks (component, hook)
+  - Layer 4 (integration): 1 task (wiring)
+
+Generating Layer 2 (Backend)...
+Batch 1/1: [L2-001]
+- L2-001-theme-settings-api.xml
+Reviewing batch... PASSED
+Created: docs/tasks/dark-mode-toggle/2-backend/.done
+
+Generating Layer 3 (Frontend)...
+Batch 1/1: [L3-001, L3-002]
+- L3-001-theme-toggle-component.xml
+- L3-002-use-theme-hook.xml
+Reviewing batch... PASSED
+Created: docs/tasks/dark-mode-toggle/3-frontend/.done
+
+Generating Layer 4 (Integration)...
+Batch 1/1: [L4-001]
+- L4-001-wire-theme-toggle.xml
+Reviewing batch... PASSED
+Created: docs/tasks/dark-mode-toggle/4-integration/.done
+
+Breakdown complete!
+- Total tasks: 4
+- 2-backend: 1 task
+- 3-frontend: 2 tasks
+- 4-integration: 1 task
+
+To execute:
+  /execute docs/tasks/dark-mode-toggle/ --project-path /existing/project
 ```

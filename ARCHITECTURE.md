@@ -14,29 +14,43 @@ This document describes the system architecture for developers who want to under
           │                    Claude Code CLI                    │
           └───────────────────────────────────────────────────────┘
                                       │
-             ┌────────────────────────┼────────────────────────┐
-             │                        │                        │
-             ▼                        ▼                        ▼
-      ┌─────────────┐          ┌─────────────┐          ┌─────────────┐
-      │    /prd     │          │  /breakdown │          │  /execute   │
-      │   Command   │          │    Skill    │          │    Skill    │
-      │             │          │             │          │             │
-      │  context:   │          │  context:   │          │  context:   │
-      │  (default)  │          │  fork       │          │  fork       │
-      └──────┬──────┘          └──────┬──────┘          └──────┬──────┘
-             │                        │                        │
-             │                        │                        │
-             ▼                        │                        │
-      ┌─────────────┐                 │                        │
-      │  8-Phase    │                 │                        │
-      │  Workflow   │                 │                        │
-      └──────┬──────┘                 │                        │
-             │                        │                        │
-             ▼                        │                        │
-      docs/prd/{slug}/                │                        │
-      ├── index.md                    │                        │
-      ├── what-next.md                │                        │
-      └── features/                   │                        │
+      ┌───────────────────────────────┼───────────────────────────────────┐
+      │                               │                                   │
+      │          ┌────────────────────┼────────────────────┐              │
+      │          │                    │                    │              │
+      ▼          ▼                    ▼                    ▼              ▼
+┌─────────┐┌─────────────┐     ┌─────────────┐      ┌─────────────┐┌──────────────┐
+│  /crd   ││    /prd     │     │  /breakdown │      │  /execute   ││/crd-context  │
+│ Command ││   Command   │     │    Skill    │      │    Skill    ││  Command     │
+│         ││             │     │             │      │             ││              │
+│ context:││  context:   │     │  context:   │      │  context:   ││  context:    │
+│  fork   ││  (default)  │     │  fork       │      │  fork       ││   fork       │
+└────┬────┘└──────┬──────┘     └──────┬──────┘      └──────┬──────┘└──────────────┘
+     │            │                   │                    │
+     │            │                   │                    │
+     │            ▼                   │                    │
+     │      ┌─────────────┐           │                    │
+     │      │  8-Phase    │           │                    │
+     │      │  Workflow   │           │                    │
+     │      └──────┬──────┘           │                    │
+     │             │                  │                    │
+     │             ▼                  │                    │
+     │      docs/prd/{slug}/          │                    │
+     │      ├── index.md              │                    │
+     │      ├── what-next.md          │                    │
+     │      └── features/             │                    │
+     │                                │                    │
+     ▼                                │                    │
+┌─────────────────────┐               │                    │
+│  CRD Sub-Skills     │               │                    │
+│                     │               │                    │
+│  crd-investigate    │◄──PROJECT.md  │                    │
+│  crd-context-update │  (generated)  │                    │
+│  crd-impact-analysis│               │                    │
+└─────────┬───────────┘               │                    │
+          │                           │                    │
+          ▼                           │                    │
+   docs/crd/{slug}.md                 │                    │
                                       │                        │
                     ┌─────────────────┴─────────────────┐      │
                     │                                   │      │
@@ -200,6 +214,10 @@ Different components use different models based on their requirements:
 | Component | Model | Reasoning |
 |-----------|-------|-----------|
 | `/prd` | sonnet | Complex reasoning for requirements |
+| `/crd` | sonnet | Context management, impact analysis |
+| `crd-investigate` | sonnet | Deep codebase analysis |
+| `crd-context-update` | sonnet | Incremental context updates |
+| `crd-impact-analysis` | sonnet | Change impact analysis |
 | `/breakdown` | sonnet | Architecture decisions |
 | `breakdown-analyze-prd` | sonnet | Feature extraction, inference |
 | `breakdown-plan-layers` | sonnet | Dependency analysis |
@@ -211,6 +229,7 @@ Different components use different models based on their requirements:
 | `execute-task` | sonnet | Code implementation |
 | `execute-verify` | haiku | Fast, focused verification |
 | `execute-merge` | sonnet | Git operations |
+| `project-context-finalizer` | sonnet | Update PROJECT.md after execution |
 
 ### Selection Principles
 
@@ -225,7 +244,9 @@ Different components use different models based on their requirements:
 ```
 .claude/
 ├── commands/
-│   └── prd.md                    # /prd command (user-invocable)
+│   ├── prd.md                    # /prd command (user-invocable)
+│   ├── crd.md                    # /crd command (brownfield)
+│   └── crd-context.md            # /crd-context command
 │
 ├── skills/
 │   ├── breakdown/
@@ -269,16 +290,35 @@ Different components use different models based on their requirements:
 │   ├── execute-verify/
 │   │   └── SKILL.md              # Independent verification
 │   │
-│   └── execute-merge/
-│       ├── SKILL.md              # Sequential merge
-│       └── references/
-│           └── merge-strategy.md # Merge process
+│   ├── execute-merge/
+│   │   ├── SKILL.md              # Sequential merge
+│   │   └── references/
+│   │       └── merge-strategy.md # Merge process
+│   │
+│   ├── crd/                      # CRD orchestration
+│   │   ├── SKILL.md
+│   │   └── references/
+│   │       ├── crd-format.md     # CRD document format
+│   │       └── project-format.md # PROJECT.md format
+│   │
+│   ├── crd-investigate/          # Full codebase analysis
+│   │   └── SKILL.md
+│   │
+│   ├── crd-context-update/       # Incremental context update
+│   │   └── SKILL.md
+│   │
+│   └── crd-impact-analysis/      # Change impact analysis
+│       └── SKILL.md
 │
 └── agents/
     ├── task-generator.md         # Task XML creation
     ├── task-implementer.md       # Small-context execution
     ├── task-reviewer.md          # Quality validation
-    └── verification-runner.md    # Command execution
+    ├── verification-runner.md    # Command execution
+    ├── crd-investigator.md       # Deep codebase analysis
+    ├── crd-context-updater.md    # Incremental updates
+    ├── crd-impact-analyzer.md    # Impact analysis
+    └── project-context-finalizer.md # Post-execute updates
 ```
 
 ### Skills vs Commands vs Agents
@@ -365,6 +405,46 @@ docs/prd/{slug}/index.md
     └── 4-integration/
 ```
 
+### CRD Phase (Brownfield)
+
+```
+User describes change + existing project path
+         │
+         ▼
+    ┌─────────────────────┐
+    │        /crd         │
+    │   (orchestrator)    │
+    └─────────┬───────────┘
+              │
+    ┌─────────┴─────────────────────────────────────┐
+    │  Phase 1: Context Management                  │
+    │                                               │
+    │  PROJECT.md exists?                           │
+    │    NO  ──► crd-investigate ──► PROJECT.md    │
+    │    YES ──► context stale?                     │
+    │              YES ──► crd-context-update       │
+    │              NO  ──► proceed                  │
+    └─────────────────────────────────────────────────┘
+              │
+              ▼
+    ┌─────────────────────┐
+    │  Phase 2: Capture   │
+    │                     │
+    │  - Change type      │
+    │  - Motivation       │
+    │  - Requirements     │
+    └─────────┬───────────┘
+              │
+              ▼
+    ┌─────────────────────┐
+    │  crd-impact-        │──────► Impact report
+    │  analysis           │        (files, features, APIs)
+    └─────────┬───────────┘
+              │
+              ▼
+    docs/crd/{slug}.md     ◄── CRD document
+```
+
 ### Execute Phase
 
 ```
@@ -417,6 +497,19 @@ docs/tasks/{slug}/
               │
               ▼
     Working code in project directory
+              │
+    ┌─────────┴───────────────────────────────────────┐
+    │  PROJECT.md exists? (CRD execution)             │
+    │                                                 │
+    │    YES ──► project-context-finalizer            │
+    │            ├── Extract exports from tasks       │
+    │            ├── Update <features> section        │
+    │            ├── Update <api-registry>            │
+    │            ├── Update <schema-registry>         │
+    │            └── Update <last-context-hash>       │
+    │                                                 │
+    │    NO ──► Skip (greenfield PRD project)         │
+    └─────────────────────────────────────────────────┘
 ```
 
 ---

@@ -8,9 +8,16 @@ Instructions for Claude when working in this repository.
 
 This repository contains Claude Code skills demonstrating an autonomous software development pipeline:
 
+### Greenfield (New Projects)
 1. **`/prd`** - Interactive PRD creation command
 2. **`/breakdown`** - PRD to task conversion skill
 3. **`/execute`** - Parallel task execution skill
+
+### Brownfield (Existing Projects)
+1. **`/crd`** - Change Request Document creation with context management
+2. **`/crd-context`** - Standalone PROJECT.md management
+3. **`/breakdown`** - CRD to task conversion (reused)
+4. **`/execute`** - Parallel execution with context finalization (reused)
 
 The key innovation demonstrated is **context fork** - skills that run in isolated contexts.
 
@@ -20,12 +27,23 @@ The key innovation demonstrated is **context fork** - skills that run in isolate
 
 ```
 .claude/
-├── commands/         # User-invocable commands (/prd)
+├── commands/         # User-invocable commands
+│   ├── prd.md        # /prd - PRD creation
+│   ├── crd.md        # /crd - CRD creation
+│   └── crd-context.md # /crd-context - Context management
 ├── skills/           # Skills with SKILL.md definitions
-│   ├── breakdown/    # Main breakdown skill
+│   ├── breakdown/    # Main breakdown skill (PRD + CRD)
 │   ├── execute/      # Main execute skill
+│   ├── crd/          # CRD orchestration
+│   ├── crd-investigate/    # Deep codebase analysis
+│   ├── crd-context-update/ # Incremental context update
+│   ├── crd-impact-analysis/ # Change impact analysis
 │   └── ...           # Sub-skills
 └── agents/           # Agent definitions for Task tool
+    ├── crd-investigator.md     # PROJECT.md generation
+    ├── crd-context-updater.md  # Incremental updates
+    ├── crd-impact-analyzer.md  # Impact analysis
+    └── project-context-finalizer.md # Post-execute updates
 
 docs/
 ├── IMPLEMENTATION_GUIDE.md  # Guide for creating documentation
@@ -58,6 +76,7 @@ model: sonnet
 
 ### Skill Hierarchy
 
+**Execute Pipeline:**
 ```
 /execute (fork)
     └─► execute-layer (fork)
@@ -65,6 +84,15 @@ model: sonnet
                     ├─► execute-task (fork)
                     │       └─► execute-verify (fork)
                     └─► execute-merge (fork)
+    └─► project-context-finalizer (CRD only)
+```
+
+**CRD Workflow:**
+```
+/crd (fork)
+    ├─► /crd-investigate (fork)     ← If no PROJECT.md
+    ├─► /crd-context-update (fork)  ← If PROJECT.md stale
+    └─► /crd-impact-analysis (fork) ← Analyze change impact
 ```
 
 ### Reference Files
@@ -106,10 +134,21 @@ Tasks are XML with these sections:
 
 ### State Files
 
-- `analysis.json` - PRD analysis output
+- `analysis.json` - PRD/CRD analysis output
 - `layer_plan.json` - Layer organization
 - `manifest.json` - Task inventory
 - `execute-state.json` - Execution state
+- `PROJECT.md` - Codebase context (brownfield only)
+
+### CRD Document Format
+
+CRDs are XML documents with these sections:
+- `<meta>` - Slug, type (feature-add/modify/remove/refactor), status
+- `<context>` - PROJECT.md reference, related features
+- `<change-request>` - Summary, motivation
+- `<impact-analysis>` - Affected files, features, APIs, schemas
+- `<requirements>` - MoSCoW prioritized requirements
+- `<acceptance-criteria>` - Given/When/Then test criteria
 
 ---
 

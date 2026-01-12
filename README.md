@@ -17,7 +17,9 @@
 
 ---
 
-## The Workflow
+## The Workflows
+
+### Greenfield: New Projects
 
 ```
      ┌──────────────┐         ┌───────────────┐         ┌──────────────┐
@@ -32,7 +34,22 @@
      structured form          task XML files             with tests
 ```
 
-**Three commands. One pipeline. Autonomous development.**
+### Brownfield: Existing Projects
+
+```
+     ┌──────────────┐         ┌───────────────┐         ┌──────────────┐
+     │    /crd      │         │   /breakdown  │         │   /execute   │
+     │              │  ────>  │               │  ────>  │              │
+     │  Change Req  │         │   2-3 Layers  │         │   Parallel   │
+     │  + Context   │         │   Focused     │         │   Worktrees  │
+     └──────────────┘         └───────────────┘         └──────────────┘
+           │                        │                         │
+           │                        │                         │
+     PROJECT.md              Impact-scoped               Changes merged
+     auto-generated          task XML files              with context update
+```
+
+**Four commands. Two workflows. Autonomous development.**
 
 ---
 
@@ -80,7 +97,9 @@ Copy the `.claude` directory to your project:
 cp -r .claude /path/to/your/project/
 ```
 
-### 2. Create a PRD
+### Option A: New Project (Greenfield)
+
+#### 2. Create a PRD
 
 ```bash
 claude /prd
@@ -88,7 +107,7 @@ claude /prd
 
 Follow the interactive 8-phase workflow to define your project requirements.
 
-### 3. Break It Down
+#### 3. Break It Down
 
 ```bash
 claude /breakdown docs/prd/your-project/index.md
@@ -96,7 +115,7 @@ claude /breakdown docs/prd/your-project/index.md
 
 Generates self-contained task XML files organized into 5 architectural layers.
 
-### 4. Execute
+#### 4. Execute
 
 ```bash
 claude /execute docs/tasks/your-project
@@ -104,9 +123,41 @@ claude /execute docs/tasks/your-project
 
 Tasks execute in parallel using git worktrees, with TDD verification.
 
+### Option B: Existing Project (Brownfield)
+
+#### 2. Create a CRD
+
+```bash
+claude /crd --project /path/to/existing-project "Add dark mode toggle"
+```
+
+The CRD workflow:
+- Generates or updates `PROJECT.md` (codebase context)
+- Captures your change request interactively
+- Runs impact analysis on existing code
+- Creates a focused CRD document
+
+#### 3. Break It Down
+
+```bash
+claude /breakdown docs/crd/dark-mode-toggle.md --project-path /path/to/existing-project
+```
+
+Generates 2-3 layers of tasks (no Layer 0 setup for existing projects).
+
+#### 4. Execute
+
+```bash
+claude /execute docs/tasks/dark-mode-toggle --project-path /path/to/existing-project
+```
+
+Tasks execute in parallel, then `PROJECT.md` is updated with new features.
+
 ---
 
 ## What Gets Created
+
+### Greenfield (PRD)
 
 ```
 your-project/
@@ -140,6 +191,39 @@ your-project/
     └── ...
 ```
 
+### Brownfield (CRD)
+
+```
+existing-project/
+├── PROJECT.md                        # Codebase context (auto-generated)
+│   ├── Human-readable sections       # Architecture, tech stack, patterns
+│   └── <project-context>             # Machine-readable XML
+│       ├── <features>                # Implemented features
+│       ├── <api-registry>            # API endpoints
+│       └── <schema-registry>         # Database models
+│
+├── docs/
+│   ├── crd/
+│   │   └── dark-mode-toggle.md       # Your CRD
+│   │       ├── <change-request>      # What & why
+│   │       ├── <impact-analysis>     # Affected files/features
+│   │       └── <requirements>        # MoSCoW priorities
+│   │
+│   └── tasks/
+│       └── dark-mode-toggle/
+│           ├── analysis.json         # CRD analysis
+│           ├── layer_plan.json       # Focused layers
+│           ├── 2-backend/            # Only affected layers
+│           │   └── L2-001-*.xml
+│           ├── 3-frontend/
+│           │   └── L3-*.xml
+│           └── 4-integration/
+│               └── L4-*.xml
+│
+└── src/                              # Your existing + new code
+    └── ...
+```
+
 ---
 
 ## Key Features
@@ -156,11 +240,17 @@ Failed tasks retry with actionable feedback. Up to 5 attempts before abandonment
 ### Resume Anywhere
 State management tracks every task. Stop and continue anytime. No progress lost.
 
+### Project Context (CRD)
+`PROJECT.md` provides codebase understanding for brownfield projects:
+- Auto-generated via deep codebase investigation
+- Incrementally updated via git diff when stale
+- Machine-readable context for impact analysis
+
 ### Model Specialization
 - **Sonnet**: Orchestration, architecture, implementation
 - **Haiku**: Fast verification, quality checks
 
-### 5-Layer Architecture
+### 5-Layer Architecture (Greenfield)
 ```
 Layer 4: Integration     ◄── E2E flows, wiring
          ▲
@@ -206,12 +296,13 @@ Tasks execute in parallel. Merge sequentially. No conflicts.
 ### Skills Reference
 - [Skills Overview](docs/skills/README.md) - All skills at a glance
 - [/prd Command](docs/skills/prd.md) - Interactive PRD creation
+- [/crd Command](docs/skills/crd.md) - Change Request Documents
 - [/breakdown Skill](docs/skills/breakdown/README.md) - Task generation
 - [/execute Skill](docs/skills/execute/README.md) - Parallel execution
 
 ### Deep Dives
 - [Concepts](docs/concepts/README.md) - Core ideas explained
-- [Full Example: Todo App](docs/examples/todo-app.md) - End-to-end walkthrough
+- [Full Example: Todo App](docs/examples/todo-app.md) - End-to-end walkthrough (greenfield)
 
 ### Reference
 - [Commands](docs/reference/commands.md) - All commands and arguments
@@ -240,24 +331,33 @@ Tasks execute in parallel. Merge sequentially. No conflicts.
 
 ## How It Works
 
-### Phase 1: PRD Creation (`/prd`)
+### Greenfield: PRD Creation (`/prd`)
 Interactive 8-phase workflow guides you through defining:
 - Problem statement and target users
 - Tech stack selection
 - Features with MoSCoW prioritization
 - Dependencies and integrations
 
-### Phase 2: Task Breakdown (`/breakdown`)
+### Brownfield: CRD Creation (`/crd`)
+Context-aware change capture for existing projects:
+1. **Investigate** - Deep codebase analysis → `PROJECT.md`
+2. **Capture** - Change type, motivation, requirements
+3. **Analyze** - Impact analysis on existing code
+4. **Generate** - Focused CRD document
+
+### Task Breakdown (`/breakdown`)
+Works with both PRD and CRD inputs:
 1. **Analyze** - Extract features, infer data models and APIs
-2. **Plan** - Organize into 5 architectural layers
+2. **Plan** - Organize into layers (5 for PRD, 2-3 for CRD)
 3. **Generate** - Create self-contained task XML files
 4. **Review** - Validate each task for completeness
 
-### Phase 3: Parallel Execution (`/execute`)
+### Parallel Execution (`/execute`)
 1. **Orchestrate** - Process layers sequentially, tasks in parallel
 2. **Implement** - Each task runs in isolated git worktree
 3. **Verify** - Independent verification with Haiku
 4. **Merge** - Sequential merge to main branch
+5. **Finalize** - Update `PROJECT.md` with new features (CRD only)
 
 ---
 

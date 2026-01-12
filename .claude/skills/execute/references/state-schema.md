@@ -169,6 +169,15 @@ Current version: `2.0`
     "total_attempts": 13,
     "total_retries": 1,
     "elapsed_seconds": 9000
+  },
+
+  "context_update": {
+    "status": "pending",
+    "project_md_path": null,
+    "features_added": [],
+    "endpoints_added": [],
+    "models_added": [],
+    "commit_hash": null
   }
 }
 ```
@@ -288,6 +297,30 @@ Current version: `2.0`
   "feedback": "Actionable fix suggestion from verification"
 }
 ```
+
+### Context Update Object
+
+For CRD-based projects with PROJECT.md, this tracks the post-execution context update:
+
+```json
+{
+  "status": "pending|in_progress|completed|skipped",
+  "project_md_path": "/path/to/PROJECT.md",
+  "features_added": ["dark-mode", "theme-settings"],
+  "endpoints_added": ["/api/settings/theme"],
+  "models_added": ["ThemePreference"],
+  "commit_hash": "abc123"
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `status` | enum | pending, in_progress, completed, skipped (no PROJECT.md) |
+| `project_md_path` | string | Path to PROJECT.md (null if not exists) |
+| `features_added` | array | Feature IDs added to PROJECT.md |
+| `endpoints_added` | array | API endpoints added to api-registry |
+| `models_added` | array | Model names added to schema-registry |
+| `commit_hash` | string | Git commit hash of context update |
 
 ## State Transitions
 

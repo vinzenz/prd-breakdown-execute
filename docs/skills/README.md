@@ -7,35 +7,42 @@ An overview of all skills in the PRD Breakdown Execute workflow.
 ## Skill Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                             User Commands                                   │
-├─────────────────────────────────────────────────────────────────────────────┤
-│       /prd                  /breakdown                  /execute            │
-│      (command)               (skill)                    (skill)             │
-└────────┬────────────────────────┬────────────────────────────┬──────────────┘
-         │                        │                            │
-         │                        │                            │
-         ▼                        ▼                            ▼
-    ┌─────────┐          ┌────────────────┐           ┌────────────────┐
-    │8 Phases │          │ analyze-prd    │           │ execute-layer  │
-    │         │          └────────────────┘           └────────────────┘
-    │         │          ┌────────────────┐           ┌────────────────┐
-    │         │          │ plan-layers    │           │ execute-batch  │
-    │         │          └────────────────┘           └────────────────┘
-    │         │          ┌────────────────┐           ┌────────────────┐
-    │         │          │ generate-tasks │           │ execute-task   │
-    │         │          └────────────────┘           └────────────────┘
-    │         │          ┌────────────────┐           ┌────────────────┐
-    │         │          │ review-tasks   │           │ execute-verify │
-    └─────────┘          └────────────────┘           └────────────────┘
-                                                      ┌────────────────┐
-                                                      │ execute-merge  │
-                                                      └────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│                                    User Commands                                      │
+├──────────────────────────────────────────────────────────────────────────────────────┤
+│     /prd        /crd        /crd-context       /breakdown           /execute         │
+│   (command)   (command)     (command)           (skill)             (skill)          │
+└───────┬──────────┬─────────────┬──────────────────┬───────────────────┬──────────────┘
+        │          │             │                  │                   │
+        │          │             │                  │                   │
+        ▼          │             │                  ▼                   ▼
+   ┌─────────┐     │             │         ┌────────────────┐   ┌────────────────┐
+   │8 Phases │     │             │         │ analyze-prd    │   │ execute-layer  │
+   │         │     │             │         └────────────────┘   └────────────────┘
+   └─────────┘     │             │         ┌────────────────┐   ┌────────────────┐
+                   │             │         │ plan-layers    │   │ execute-batch  │
+                   │             │         └────────────────┘   └────────────────┘
+                   ▼             ▼         ┌────────────────┐   ┌────────────────┐
+          ┌────────────────────────────┐   │ generate-tasks │   │ execute-task   │
+          │ CRD Sub-Skills             │   └────────────────┘   └────────────────┘
+          │                            │   ┌────────────────┐   ┌────────────────┐
+          │ ┌────────────────────────┐ │   │ review-tasks   │   │ execute-verify │
+          │ │ crd-investigate        │ │   └────────────────┘   └────────────────┘
+          │ └────────────────────────┘ │                        ┌────────────────┐
+          │ ┌────────────────────────┐ │                        │ execute-merge  │
+          │ │ crd-context-update     │ │                        └────────────────┘
+          │ └────────────────────────┘ │                        ┌────────────────┐
+          │ ┌────────────────────────┐ │                        │ context-       │
+          │ │ crd-impact-analysis    │ │                        │ finalizer      │
+          │ └────────────────────────┘ │                        └────────────────┘
+          └────────────────────────────┘
 ```
 
 ---
 
 ## Quick Reference
+
+### PRD Workflow (Greenfield)
 
 | Skill | Context | Model | Purpose |
 |-------|---------|-------|---------|
@@ -51,6 +58,17 @@ An overview of all skills in the PRD Breakdown Execute workflow.
 | `execute-task` | fork | sonnet | TDD implementation |
 | `execute-verify` | fork | haiku | Independent verification |
 | `execute-merge` | fork | sonnet | Sequential merge |
+
+### CRD Workflow (Brownfield)
+
+| Skill | Context | Model | Purpose |
+|-------|---------|-------|---------|
+| [`/crd`](crd.md) | fork | sonnet | Change Request Document creation |
+| [`/crd-context`](crd.md#crd-context) | fork | sonnet | PROJECT.md management |
+| `crd-investigate` | fork | sonnet | Deep codebase analysis |
+| `crd-context-update` | fork | sonnet | Incremental context update |
+| `crd-impact-analysis` | fork | sonnet | Change impact analysis |
+| `project-context-finalizer` | fork | sonnet | Post-execution context update |
 
 ---
 
@@ -98,16 +116,27 @@ Used for tasks requiring:
 
 ## Skill Categories
 
-### PRD Creation
+### Greenfield (New Projects)
+
+**PRD Creation**
 - [/prd](prd.md) - Interactive 8-phase PRD creation
 
-### Task Breakdown
-- [/breakdown](breakdown/README.md) - Main orchestrator
+### Brownfield (Existing Projects)
+
+**CRD Creation**
+- [/crd](crd.md) - Context-aware change request creation
+- [/crd-context](crd.md#crd-context) - Standalone PROJECT.md management
+- Impact Analysis - Automatic change impact detection
+
+### Shared Skills
+
+**Task Breakdown**
+- [/breakdown](breakdown/README.md) - Main orchestrator (works with PRD and CRD)
 - [Layers](breakdown/layers.md) - 5-layer architecture
 - [Task Format](breakdown/task-format.md) - XML specification
 - [Sub-skills](breakdown/sub-skills.md) - Component skills
 
-### Task Execution
+**Task Execution**
 - [/execute](execute/README.md) - Main orchestrator
 - [Hierarchy](execute/hierarchy.md) - 4-level structure
 - [Worktrees](execute/worktrees.md) - Git isolation
@@ -122,51 +151,80 @@ Used for tasks requiring:
 ```
 .claude/
 ├── commands/
-│   └── prd.md                    # /prd command
+│   ├── prd.md                    # /prd command
+│   ├── crd.md                    # /crd command
+│   └── crd-context.md            # /crd-context command
 │
-└── skills/
-    ├── breakdown/
-    │   ├── SKILL.md              # Main skill
-    │   └── references/           # Supporting docs
-    │
-    ├── breakdown-analyze-prd/
-    │   └── SKILL.md
-    │
-    ├── breakdown-plan-layers/
-    │   └── SKILL.md
-    │
-    ├── breakdown-generate-tasks/
-    │   └── SKILL.md
-    │
-    ├── breakdown-review-tasks/
-    │   └── SKILL.md
-    │
-    ├── execute/
-    │   ├── SKILL.md
-    │   └── references/
-    │
-    ├── execute-layer/
-    │   └── SKILL.md
-    │
-    ├── execute-batch/
-    │   └── SKILL.md
-    │
-    ├── execute-task/
-    │   ├── SKILL.md
-    │   └── references/
-    │
-    ├── execute-verify/
-    │   └── SKILL.md
-    │
-    └── execute-merge/
-        ├── SKILL.md
-        └── references/
+├── skills/
+│   ├── breakdown/
+│   │   ├── SKILL.md              # Main skill (PRD + CRD)
+│   │   └── references/           # Supporting docs
+│   │
+│   ├── breakdown-analyze-prd/
+│   │   └── SKILL.md
+│   │
+│   ├── breakdown-plan-layers/
+│   │   └── SKILL.md
+│   │
+│   ├── breakdown-generate-tasks/
+│   │   └── SKILL.md
+│   │
+│   ├── breakdown-review-tasks/
+│   │   └── SKILL.md
+│   │
+│   ├── execute/
+│   │   ├── SKILL.md
+│   │   └── references/
+│   │
+│   ├── execute-layer/
+│   │   └── SKILL.md
+│   │
+│   ├── execute-batch/
+│   │   └── SKILL.md
+│   │
+│   ├── execute-task/
+│   │   ├── SKILL.md
+│   │   └── references/
+│   │
+│   ├── execute-verify/
+│   │   └── SKILL.md
+│   │
+│   ├── execute-merge/
+│   │   ├── SKILL.md
+│   │   └── references/
+│   │
+│   ├── crd/                      # CRD orchestration
+│   │   ├── SKILL.md
+│   │   └── references/
+│   │       ├── crd-format.md     # CRD document format
+│   │       └── project-format.md # PROJECT.md format
+│   │
+│   ├── crd-investigate/          # Deep codebase analysis
+│   │   └── SKILL.md
+│   │
+│   ├── crd-context-update/       # Incremental context
+│   │   └── SKILL.md
+│   │
+│   └── crd-impact-analysis/      # Change impact
+│       └── SKILL.md
+│
+└── agents/
+    ├── crd-investigator.md       # PROJECT.md generation
+    ├── crd-context-updater.md    # Incremental updates
+    ├── crd-impact-analyzer.md    # Impact analysis
+    └── project-context-finalizer.md  # Post-execute updates
 ```
 
 ---
 
 ## Next Steps
 
+### Greenfield Projects
 - [/prd Command](prd.md) - PRD creation reference
 - [/breakdown Skill](breakdown/README.md) - Task generation
 - [/execute Skill](execute/README.md) - Parallel execution
+
+### Brownfield Projects
+- [/crd Command](crd.md) - Change Request Document creation
+- [/breakdown Skill](breakdown/README.md) - CRD to task conversion
+- [/execute Skill](execute/README.md) - Parallel execution with context updates
