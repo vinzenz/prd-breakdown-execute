@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 280">
+  <defs>
+    <linearGradient id="pcBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+    <linearGradient id="taskA" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f472b6"/>
+      <stop offset="100%" style="stop-color:#ec4899"/>
+    </linearGradient>
+    <linearGradient id="taskB" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#a78bfa"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="taskC" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#60a5fa"/>
+      <stop offset="100%" style="stop-color:#3b82f6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="700" height="280" fill="url(#pcBg)" rx="12"/>
+
+  <!-- Left side: Sequential -->
+  <text x="170" y="40" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#f87171" text-anchor="middle">Sequential (no fork)</text>
+
+  <!-- Sequential timeline -->
+  <line x1="40" y1="70" x2="40" y2="200" stroke="#334155" stroke-width="2"/>
+  <text x="30" y="220" font-family="system-ui, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">Time</text>
+  <polygon points="40,205 35,195 45,195" fill="#334155"/>
+
+  <!-- Sequential Task A -->
+  <rect x="60" y="75" width="120" height="30" rx="4" fill="url(#taskA)"/>
+  <text x="120" y="95" font-family="system-ui, sans-serif" font-size="12" font-weight="500" fill="white" text-anchor="middle">Task A</text>
+
+  <!-- Sequential Task B -->
+  <rect x="60" y="115" width="120" height="30" rx="4" fill="url(#taskB)"/>
+  <text x="120" y="135" font-family="system-ui, sans-serif" font-size="12" font-weight="500" fill="white" text-anchor="middle">Task B</text>
+
+  <!-- Sequential Task C -->
+  <rect x="60" y="155" width="120" height="30" rx="4" fill="url(#taskC)"/>
+  <text x="120" y="175" font-family="system-ui, sans-serif" font-size="12" font-weight="500" fill="white" text-anchor="middle">Task C</text>
+
+  <!-- Sequential time indicator -->
+  <line x1="200" y1="75" x2="200" y2="185" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,4"/>
+  <text x="220" y="130" font-family="system-ui, sans-serif" font-size="11" fill="#ef4444">24 units</text>
+
+  <!-- Divider -->
+  <line x1="350" y1="30" x2="350" y2="250" stroke="#334155" stroke-width="1" stroke-dasharray="8,4"/>
+
+  <!-- Right side: Parallel -->
+  <text x="525" y="40" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#4ade80" text-anchor="middle">Parallel (with fork)</text>
+
+  <!-- Parallel timeline -->
+  <line x1="390" y1="70" x2="390" y2="200" stroke="#334155" stroke-width="2"/>
+  <text x="380" y="220" font-family="system-ui, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">Time</text>
+  <polygon points="390,205 385,195 395,195" fill="#334155"/>
+
+  <!-- Parallel Task A -->
+  <rect x="410" y="75" width="120" height="30" rx="4" fill="url(#taskA)"/>
+  <text x="470" y="95" font-family="system-ui, sans-serif" font-size="12" font-weight="500" fill="white" text-anchor="middle">Task A</text>
+
+  <!-- Parallel Task B -->
+  <rect x="410" y="115" width="120" height="30" rx="4" fill="url(#taskB)"/>
+  <text x="470" y="135" font-family="system-ui, sans-serif" font-size="12" font-weight="500" fill="white" text-anchor="middle">Task B</text>
+
+  <!-- Parallel Task C -->
+  <rect x="410" y="155" width="120" height="30" rx="4" fill="url(#taskC)"/>
+  <text x="470" y="175" font-family="system-ui, sans-serif" font-size="12" font-weight="500" fill="white" text-anchor="middle">Task C</text>
+
+  <!-- Parallel time indicator -->
+  <line x1="550" y1="75" x2="550" y2="105" stroke="#22c55e" stroke-width="2" stroke-dasharray="4,4"/>
+  <text x="575" y="95" font-family="system-ui, sans-serif" font-size="11" fill="#22c55e">8 units</text>
+
+  <!-- Speed indicator -->
+  <rect x="560" y="220" width="120" height="40" rx="8" fill="rgba(34,197,94,0.2)" stroke="#22c55e" stroke-width="1"/>
+  <text x="620" y="245" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="#4ade80" text-anchor="middle">3x Faster</text>
+</svg>

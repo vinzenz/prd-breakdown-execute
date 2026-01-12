@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 200">
+  <defs>
+    <linearGradient id="ecBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+    <filter id="ecShadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="500" height="200" fill="url(#ecBg)" rx="12"/>
+
+  <!-- Task A - Fail then Pass -->
+  <g filter="url(#ecShadow)">
+    <rect x="30" y="30" width="130" height="140" rx="8" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+    <text x="95" y="55" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#e2e8f0" text-anchor="middle">Task A</text>
+
+    <!-- Fail state -->
+    <rect x="45" y="70" width="100" height="28" rx="4" fill="rgba(239,68,68,0.2)" stroke="#ef4444" stroke-width="1"/>
+    <text x="95" y="89" font-family="system-ui, sans-serif" font-size="11" fill="#f87171" text-anchor="middle">FAIL</text>
+
+    <!-- Arrow down -->
+    <path d="M 95 105 L 95 118" stroke="#fbbf24" stroke-width="2"/>
+    <polygon points="95,123 90,115 100,115" fill="#fbbf24"/>
+
+    <!-- Pass state -->
+    <rect x="45" y="128" width="100" height="28" rx="4" fill="rgba(34,197,94,0.2)" stroke="#22c55e" stroke-width="1"/>
+    <text x="95" y="147" font-family="system-ui, sans-serif" font-size="11" fill="#4ade80" text-anchor="middle">Retry → PASS</text>
+  </g>
+
+  <!-- Task B - Pass -->
+  <g filter="url(#ecShadow)">
+    <rect x="185" y="30" width="130" height="140" rx="8" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+    <text x="250" y="55" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#e2e8f0" text-anchor="middle">Task B</text>
+
+    <rect x="200" y="80" width="100" height="50" rx="4" fill="rgba(34,197,94,0.2)" stroke="#22c55e" stroke-width="1"/>
+    <circle cx="250" cy="105" r="12" fill="#22c55e"/>
+    <text x="250" y="110" font-family="system-ui, sans-serif" font-size="14" fill="white" text-anchor="middle">✓</text>
+    <text x="250" y="145" font-family="system-ui, sans-serif" font-size="11" fill="#4ade80" text-anchor="middle">PASS</text>
+  </g>
+
+  <!-- Task C - Pass -->
+  <g filter="url(#ecShadow)">
+    <rect x="340" y="30" width="130" height="140" rx="8" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+    <text x="405" y="55" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#e2e8f0" text-anchor="middle">Task C</text>
+
+    <rect x="355" y="80" width="100" height="50" rx="4" fill="rgba(34,197,94,0.2)" stroke="#22c55e" stroke-width="1"/>
+    <circle cx="405" cy="105" r="12" fill="#22c55e"/>
+    <text x="405" y="110" font-family="system-ui, sans-serif" font-size="14" fill="white" text-anchor="middle">✓</text>
+    <text x="405" y="145" font-family="system-ui, sans-serif" font-size="11" fill="#4ade80" text-anchor="middle">PASS</text>
+  </g>
+
+  <!-- Caption -->
+  <text x="250" y="188" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">Errors are contained - Task B and C continue unaffected while A retries</text>
+</svg>

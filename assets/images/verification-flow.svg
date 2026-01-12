@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300">
+  <defs>
+    <linearGradient id="vfBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+    <linearGradient id="vfGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+    <linearGradient id="vfGray" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4b5563"/>
+      <stop offset="100%" style="stop-color:#374151"/>
+    </linearGradient>
+    <filter id="vfShadow">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="500" height="300" fill="url(#vfBg)" rx="12"/>
+
+  <!-- Outer container -->
+  <rect x="30" y="30" width="440" height="240" rx="10" fill="none" stroke="#334155" stroke-width="2"/>
+  <text x="50" y="55" font-family="monospace" font-size="14" font-weight="bold" fill="#4ade80">execute-task (fork)</text>
+
+  <!-- Task items -->
+  <g transform="translate(50, 75)">
+    <circle cx="8" cy="8" r="4" fill="#4ade80"/>
+    <text x="20" y="12" font-family="system-ui, sans-serif" font-size="12" fill="#cbd5e1">Writes implementation</text>
+  </g>
+  <g transform="translate(50, 100)">
+    <circle cx="8" cy="8" r="4" fill="#4ade80"/>
+    <text x="20" y="12" font-family="system-ui, sans-serif" font-size="12" fill="#cbd5e1">Creates tests</text>
+  </g>
+
+  <!-- Arrow down -->
+  <path d="M 120 125 L 120 145" stroke="#4ade80" stroke-width="2"/>
+  <polygon points="120,150 115,140 125,140" fill="#4ade80"/>
+
+  <!-- Inner verify container -->
+  <g filter="url(#vfShadow)">
+    <rect x="50" y="160" width="400" height="90" rx="8" fill="url(#vfGray)" stroke="#6b7280" stroke-width="1.5"/>
+    <text x="70" y="185" font-family="monospace" font-size="13" font-weight="bold" fill="#a5b4fc">execute-verify (fork)</text>
+
+    <!-- Verify items -->
+    <g transform="translate(70, 200)">
+      <circle cx="8" cy="8" r="4" fill="#60a5fa"/>
+      <text x="20" y="12" font-family="system-ui, sans-serif" font-size="11" fill="#e2e8f0">Fresh context - no implementation bias</text>
+    </g>
+    <g transform="translate(70, 222)">
+      <circle cx="8" cy="8" r="4" fill="#60a5fa"/>
+      <text x="20" y="12" font-family="system-ui, sans-serif" font-size="11" fill="#e2e8f0">Runs verification commands</text>
+    </g>
+  </g>
+
+  <!-- Key insight badge -->
+  <rect x="300" y="75" width="160" height="55" rx="6" fill="rgba(99,102,241,0.15)" stroke="#6366f1" stroke-width="1"/>
+  <text x="380" y="98" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#a5b4fc" text-anchor="middle">Key Insight</text>
+  <text x="380" y="117" font-family="system-ui, sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">Verifier doesn't know what</text>
+  <text x="380" y="130" font-family="system-ui, sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">implementer was "trying" to do</text>
+</svg>

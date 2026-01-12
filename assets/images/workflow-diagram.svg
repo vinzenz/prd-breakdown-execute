@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">
+  <defs>
+    <linearGradient id="wfBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+    <linearGradient id="step1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c3aed"/>
+      <stop offset="100%" style="stop-color:#6d28d9"/>
+    </linearGradient>
+    <linearGradient id="step2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#2563eb"/>
+    </linearGradient>
+    <linearGradient id="step3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4"/>
+      <stop offset="100%" style="stop-color:#0891b2"/>
+    </linearGradient>
+    <linearGradient id="step4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+    <filter id="wfShadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+    <filter id="wfGlow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="200" fill="url(#wfBg)" rx="12"/>
+
+  <!-- Step 1: /prd -->
+  <g filter="url(#wfShadow)">
+    <rect x="40" y="50" width="140" height="100" rx="12" fill="url(#step1)"/>
+    <text x="110" y="90" font-family="monospace" font-size="20" font-weight="bold" fill="white" text-anchor="middle">/prd</text>
+    <text x="110" y="115" font-family="system-ui, sans-serif" font-size="11" fill="rgba(255,255,255,0.8)" text-anchor="middle">Define Intent</text>
+    <text x="110" y="130" font-family="system-ui, sans-serif" font-size="10" fill="rgba(255,255,255,0.6)" text-anchor="middle">8-phase wizard</text>
+  </g>
+
+  <!-- Arrow 1 -->
+  <g filter="url(#wfGlow)">
+    <line x1="190" y1="100" x2="230" y2="100" stroke="#4ade80" stroke-width="3" stroke-linecap="round"/>
+    <polygon points="235,100 225,94 225,106" fill="#4ade80"/>
+  </g>
+
+  <!-- Step 2: /breakdown -->
+  <g filter="url(#wfShadow)">
+    <rect x="245" y="50" width="140" height="100" rx="12" fill="url(#step2)"/>
+    <text x="315" y="90" font-family="monospace" font-size="16" font-weight="bold" fill="white" text-anchor="middle">/breakdown</text>
+    <text x="315" y="115" font-family="system-ui, sans-serif" font-size="11" fill="rgba(255,255,255,0.8)" text-anchor="middle">Analyze & Plan</text>
+    <text x="315" y="130" font-family="system-ui, sans-serif" font-size="10" fill="rgba(255,255,255,0.6)" text-anchor="middle">Generate tasks</text>
+  </g>
+
+  <!-- Arrow 2 -->
+  <g filter="url(#wfGlow)">
+    <line x1="395" y1="100" x2="435" y2="100" stroke="#4ade80" stroke-width="3" stroke-linecap="round"/>
+    <polygon points="440,100 430,94 430,106" fill="#4ade80"/>
+  </g>
+
+  <!-- Step 3: /execute -->
+  <g filter="url(#wfShadow)">
+    <rect x="450" y="50" width="140" height="100" rx="12" fill="url(#step3)"/>
+    <text x="520" y="90" font-family="monospace" font-size="18" font-weight="bold" fill="white" text-anchor="middle">/execute</text>
+    <text x="520" y="115" font-family="system-ui, sans-serif" font-size="11" fill="rgba(255,255,255,0.8)" text-anchor="middle">Run in Parallel</text>
+    <text x="520" y="130" font-family="system-ui, sans-serif" font-size="10" fill="rgba(255,255,255,0.6)" text-anchor="middle">TDD + Verify</text>
+  </g>
+
+  <!-- Arrow 3 -->
+  <g filter="url(#wfGlow)">
+    <line x1="600" y1="100" x2="640" y2="100" stroke="#4ade80" stroke-width="3" stroke-linecap="round"/>
+    <polygon points="645,100 635,94 635,106" fill="#4ade80"/>
+  </g>
+
+  <!-- Step 4: Working Code -->
+  <g filter="url(#wfShadow)">
+    <rect x="655" y="50" width="110" height="100" rx="12" fill="url(#step4)"/>
+    <text x="710" y="85" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">Working</text>
+    <text x="710" y="105" font-family="system-ui, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">Code</text>
+    <text x="710" y="130" font-family="system-ui, sans-serif" font-size="10" fill="rgba(255,255,255,0.6)" text-anchor="middle">With tests!</text>
+  </g>
+
+  <!-- Decorative dots -->
+  <circle cx="25" cy="25" r="3" fill="#334155"/>
+  <circle cx="775" cy="25" r="3" fill="#334155"/>
+  <circle cx="25" cy="175" r="3" fill="#334155"/>
+  <circle cx="775" cy="175" r="3" fill="#334155"/>
+</svg>

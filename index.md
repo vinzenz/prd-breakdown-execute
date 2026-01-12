@@ -19,15 +19,7 @@ permalink: /
 
 PRD Breakdown Execute is a **Claude Code skills framework** that demonstrates autonomous software development. It transforms product requirements into working, tested code through an intelligent three-phase pipeline.
 
-<div class="workflow-diagram">
-  <span class="step">/prd</span>
-  <span class="arrow">→</span>
-  <span class="step">/breakdown</span>
-  <span class="arrow">→</span>
-  <span class="step">/execute</span>
-  <span class="arrow">→</span>
-  <span class="step">Working Code</span>
-</div>
+<img src="{{ '/assets/images/workflow-diagram.svg' | relative_url }}" alt="Workflow: /prd → /breakdown → /execute → Working Code" style="width: 100%; max-width: 800px; margin: 1.5rem auto; display: block;" />
 
 ---
 
@@ -35,22 +27,7 @@ PRD Breakdown Execute is a **Claude Code skills framework** that demonstrates au
 
 The framework's power comes from **context fork** - a Claude Code feature that runs skills in completely isolated execution contexts:
 
-<div class="diagram">
-<pre>
-┌─────────────────────────────────────────────────────────────────┐
-│  Main Session                                                    │
-│  ┌─────────────────────────────────────────────────────────────┐│
-│  │  /execute                                                    ││
-│  │  ┌───────────────────┐  ┌───────────────────┐               ││
-│  │  │ Task A (fork)     │  │ Task B (fork)     │  ← Parallel   ││
-│  │  │ • Fresh context   │  │ • Fresh context   │               ││
-│  │  │ • Own worktree    │  │ • Own worktree    │               ││
-│  │  │ • No interference │  │ • No interference │               ││
-│  │  └───────────────────┘  └───────────────────┘               ││
-│  └─────────────────────────────────────────────────────────────┘│
-└─────────────────────────────────────────────────────────────────┘
-</pre>
-</div>
+<img src="{{ '/assets/images/context-fork-diagram.svg' | relative_url }}" alt="Context Fork: Parallel task execution in isolated contexts" style="width: 100%; max-width: 700px; margin: 1.5rem auto; display: block; border-radius: 12px;" />
 
 This enables **true parallel execution** where multiple tasks run simultaneously without context pollution.
 

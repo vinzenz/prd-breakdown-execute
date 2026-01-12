@@ -51,29 +51,7 @@ When invoked, this skill:
 3. **Runs independently** - Other tasks don't see its work
 4. **Returns results** - Output goes back to orchestrator
 
-<div class="diagram">
-<pre>
-┌─────────────────────────────────────────────────────────┐
-│  Orchestrator (main context)                            │
-│                                                         │
-│  "Execute these 3 tasks in parallel"                    │
-│          │              │              │                │
-│          ▼              ▼              ▼                │
-│  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐       │
-│  │ Task Fork 1 │ │ Task Fork 2 │ │ Task Fork 3 │       │
-│  │             │ │             │ │             │       │
-│  │ • Empty ctx │ │ • Empty ctx │ │ • Empty ctx │       │
-│  │ • Task XML  │ │ • Task XML  │ │ • Task XML  │       │
-│  │ • Tools     │ │ • Tools     │ │ • Tools     │       │
-│  └─────────────┘ └─────────────┘ └─────────────┘       │
-│          │              │              │                │
-│          └──────────────┴──────────────┘                │
-│                         │                               │
-│                         ▼                               │
-│              Results merged back                        │
-└─────────────────────────────────────────────────────────┘
-</pre>
-</div>
+<img src="{{ '/assets/images/context-fork-diagram.svg' | relative_url }}" alt="Context Fork: Orchestrator spawns parallel task forks" style="width: 100%; max-width: 700px; margin: 1.5rem auto; display: block; border-radius: 12px;" />
 
 ## Benefits
 
@@ -81,17 +59,7 @@ When invoked, this skill:
 
 Without context fork, tasks must run sequentially because each task's context would influence the next. With forked contexts:
 
-<div class="diagram-blueprint">
-<pre>
-Sequential (no fork):        Parallel (with fork):
-
-Task A ████████████          Task A ████████████
-         Task B ████████████   Task B ████████████
-                   Task C      Task C ████████████
-
-Time: 24 units               Time: 8 units
-</pre>
-</div>
+<img src="{{ '/assets/images/parallelism-comparison.svg' | relative_url }}" alt="Sequential vs Parallel execution comparison" style="width: 100%; max-width: 700px; margin: 1.5rem auto; display: block; border-radius: 12px;" />
 
 ### No Cross-Contamination
 
@@ -109,23 +77,7 @@ No risk of Task A's auth code leaking into Task B's payment implementation.
 
 Verification runs in its own fork:
 
-<div class="diagram">
-<pre>
-┌─────────────────────────────────────────────┐
-│ execute-task (fork)                         │
-│   • Writes implementation                   │
-│   • Creates tests                           │
-│       │                                     │
-│       ▼                                     │
-│ ┌───────────────────────────────────┐       │
-│ │ execute-verify (fork)             │       │
-│ │   • Fresh context                 │       │
-│ │   • Runs verification commands    │       │
-│ │   • No implementation bias        │       │
-│ └───────────────────────────────────┘       │
-└─────────────────────────────────────────────┘
-</pre>
-</div>
+<img src="{{ '/assets/images/verification-flow.svg' | relative_url }}" alt="Independent verification in separate fork" style="width: 100%; max-width: 500px; margin: 1.5rem auto; display: block; border-radius: 12px;" />
 
 The verifier doesn't know what the implementer was "trying" to do - it just checks if the code works.
 
@@ -137,32 +89,13 @@ If Task A fails:
 - Task A retries with error feedback
 - No cascade failures
 
-<div class="diagram">
-<pre>
-┌─────────┐  ┌─────────┐  ┌─────────┐
-│ Task A  │  │ Task B  │  │ Task C  │
-│  FAIL   │  │  PASS   │  │  PASS   │
-│    ↓    │  │    ✓    │  │    ✓    │
-│  Retry  │  │         │  │         │
-│  PASS   │  │         │  │         │
-└─────────┘  └─────────┘  └─────────┘
-</pre>
-</div>
+<img src="{{ '/assets/images/error-containment.svg' | relative_url }}" alt="Error containment: failures don't cascade" style="width: 100%; max-width: 500px; margin: 1.5rem auto; display: block; border-radius: 12px;" />
 
 ## Fork Hierarchy
 
 The execute pipeline uses nested forks:
 
-<div class="diagram-flow">
-<pre>
-/execute (fork)
-    └─► execute-layer (fork)
-            └─► execute-batch (fork)
-                    ├─► execute-task (fork)
-                    │       └─► execute-verify (fork)
-                    └─► execute-merge (fork)
-</pre>
-</div>
+<img src="{{ '/assets/images/fork-hierarchy.svg' | relative_url }}" alt="Fork hierarchy: nested execution pipeline" style="width: 100%; max-width: 600px; margin: 1.5rem auto; display: block; border-radius: 12px;" />
 
 Each level manages its own scope:
 - **/execute**: Overall orchestration

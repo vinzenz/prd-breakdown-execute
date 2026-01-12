@@ -32,25 +32,7 @@ PRD Breakdown Execute solves these through:
 
 ## How It Works
 
-<div class="diagram">
-<pre>
-┌──────────────────────────────────────────────────────────────┐
-│                    PRD Breakdown Execute                      │
-├──────────────────────────────────────────────────────────────┤
-│                                                               │
-│   /prd or /crd          /breakdown              /execute      │
-│   ┌─────────┐          ┌─────────┐          ┌─────────────┐  │
-│   │ Define  │    →     │ Analyze │    →     │   Execute   │  │
-│   │ Intent  │          │ & Plan  │          │  in Parallel│  │
-│   └─────────┘          └─────────┘          └─────────────┘  │
-│                                                               │
-│   8-phase wizard       Layer planning        Git worktrees   │
-│   Feature specs        Task generation       TDD workflow    │
-│   Tech stack           Dependencies          Verification    │
-│                                                               │
-└──────────────────────────────────────────────────────────────┘
-</pre>
-</div>
+<img src="{{ '/assets/images/how-it-works.svg' | relative_url }}" alt="PRD Breakdown Execute: Three-phase pipeline" style="width: 100%; max-width: 800px; margin: 1.5rem auto; display: block; border-radius: 12px;" />
 
 ## Key Concepts
 

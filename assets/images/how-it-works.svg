@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <defs>
+    <linearGradient id="hiwBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+    <linearGradient id="hiwPurple" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c3aed"/>
+      <stop offset="100%" style="stop-color:#5b21b6"/>
+    </linearGradient>
+    <linearGradient id="hiwBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="hiwCyan" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4"/>
+      <stop offset="100%" style="stop-color:#0e7490"/>
+    </linearGradient>
+    <filter id="hiwShadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+    <filter id="hiwGlow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="400" fill="url(#hiwBg)" rx="16"/>
+
+  <!-- Title -->
+  <text x="400" y="40" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#e2e8f0" text-anchor="middle">PRD Breakdown Execute</text>
+
+  <!-- Phase 1: Define Intent -->
+  <g filter="url(#hiwShadow)">
+    <rect x="40" y="70" width="220" height="280" rx="12" fill="url(#hiwPurple)"/>
+    <text x="150" y="105" font-family="monospace" font-size="18" font-weight="bold" fill="white" text-anchor="middle">/prd or /crd</text>
+    <text x="150" y="130" font-family="system-ui, sans-serif" font-size="13" fill="rgba(255,255,255,0.9)" text-anchor="middle">Define Intent</text>
+
+    <line x1="60" y1="145" x2="240" y2="145" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+
+    <g transform="translate(60, 165)">
+      <rect width="180" height="28" rx="4" fill="rgba(255,255,255,0.1)"/>
+      <text x="90" y="19" font-family="system-ui, sans-serif" font-size="11" fill="rgba(255,255,255,0.8)" text-anchor="middle">8-phase wizard</text>
+    </g>
+    <g transform="translate(60, 200)">
+      <rect width="180" height="28" rx="4" fill="rgba(255,255,255,0.1)"/>
+      <text x="90" y="19" font-family="system-ui, sans-serif" font-size="11" fill="rgba(255,255,255,0.8)" text-anchor="middle">Feature specs</text>
+    </g>
+    <g transform="translate(60, 235)">
+      <rect width="180" height="28" rx="4" fill="rgba(255,255,255,0.1)"/>
+      <text x="90" y="19" font-family="system-ui, sans-serif" font-size="11" fill="rgba(255,255,255,0.8)" text-anchor="middle">Tech stack selection</text>
+    </g>
+
+    <text x="150" y="300" font-family="system-ui, sans-serif" font-size="10" fill="rgba(255,255,255,0.5)" text-anchor="middle">Output: PRD/CRD docs</text>
+  </g>
+
+  <!-- Arrow 1 -->
+  <g filter="url(#hiwGlow)">
+    <line x1="270" y1="210" x2="285" y2="210" stroke="#4ade80" stroke-width="3" stroke-linecap="round"/>
+    <polygon points="295,210 282,203 282,217" fill="#4ade80"/>
+  </g>
+
+  <!-- Phase 2: Analyze & Plan -->
+  <g filter="url(#hiwShadow)">
+    <rect x="290" y="70" width="220" height="280" rx="12" fill="url(#hiwBlue)"/>
+    <text x="400" y="105" font-family="monospace" font-size="18" font-weight="bold" fill="white" text-anchor="middle">/breakdown</text>
+    <text x="400" y="130" font-family="system-ui, sans-serif" font-size="13" fill="rgba(255,255,255,0.9)" text-anchor="middle">Analyze & Plan</text>
+
+    <line x1="310" y1="145" x2="490" y2="145" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+
+    <g transform="translate(310, 165)">
+      <rect width="180" height="28" rx="4" fill="rgba(255,255,255,0.1)"/>
+      <text x="90" y="19" font-family="system-ui, sans-serif" font-size="11" fill="rgba(255,255,255,0.8)" text-anchor="middle">Layer planning</text>
+    </g>
+    <g transform="translate(310, 200)">
+      <rect width="180" height="28" rx="4" fill="rgba(255,255,255,0.1)"/>
+      <text x="90" y="19" font-family="system-ui, sans-serif" font-size="11" fill="rgba(255,255,255,0.8)" text-anchor="middle">Task generation</text>
+    </g>
+    <g transform="translate(310, 235)">
+      <rect width="180" height="28" rx="4" fill="rgba(255,255,255,0.1)"/>
+      <text x="90" y="19" font-family="system-ui, sans-serif" font-size="11" fill="rgba(255,255,255,0.8)" text-anchor="middle">Dependency mapping</text>
+    </g>
+
+    <text x="400" y="300" font-family="system-ui, sans-serif" font-size="10" fill="rgba(255,255,255,0.5)" text-anchor="middle">Output: Task XML files</text>
+  </g>
+
+  <!-- Arrow 2 -->
+  <g filter="url(#hiwGlow)">
+    <line x1="520" y1="210" x2="535" y2="210" stroke="#4ade80" stroke-width="3" stroke-linecap="round"/>
+    <polygon points="545,210 532,203 532,217" fill="#4ade80"/>
+  </g>
+
+  <!-- Phase 3: Execute -->
+  <g filter="url(#hiwShadow)">
+    <rect x="540" y="70" width="220" height="280" rx="12" fill="url(#hiwCyan)"/>
+    <text x="650" y="105" font-family="monospace" font-size="18" font-weight="bold" fill="white" text-anchor="middle">/execute</text>
+    <text x="650" y="130" font-family="system-ui, sans-serif" font-size="13" fill="rgba(255,255,255,0.9)" text-anchor="middle">Execute in Parallel</text>
+
+    <line x1="560" y1="145" x2="740" y2="145" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+
+    <g transform="translate(560, 165)">
+      <rect width="180" height="28" rx="4" fill="rgba(255,255,255,0.1)"/>
+      <text x="90" y="19" font-family="system-ui, sans-serif" font-size="11" fill="rgba(255,255,255,0.8)" text-anchor="middle">Git worktrees</text>
+    </g>
+    <g transform="translate(560, 200)">
+      <rect width="180" height="28" rx="4" fill="rgba(255,255,255,0.1)"/>
+      <text x="90" y="19" font-family="system-ui, sans-serif" font-size="11" fill="rgba(255,255,255,0.8)" text-anchor="middle">TDD workflow</text>
+    </g>
+    <g transform="translate(560, 235)">
+      <rect width="180" height="28" rx="4" fill="rgba(255,255,255,0.1)"/>
+      <text x="90" y="19" font-family="system-ui, sans-serif" font-size="11" fill="rgba(255,255,255,0.8)" text-anchor="middle">Independent verification</text>
+    </g>
+
+    <text x="650" y="300" font-family="system-ui, sans-serif" font-size="10" fill="rgba(255,255,255,0.5)" text-anchor="middle">Output: Working code</text>
+  </g>
+
+  <!-- Success indicator -->
+  <g transform="translate(650, 320)">
+    <circle r="18" fill="#10b981"/>
+    <text y="6" font-family="system-ui, sans-serif" font-size="18" fill="white" text-anchor="middle">✓</text>
+  </g>
+  <text x="650" y="360" font-family="system-ui, sans-serif" font-size="11" fill="#4ade80" text-anchor="middle">With tests!</text>
+</svg>
