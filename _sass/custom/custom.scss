@@ -1,0 +1,270 @@
+// Custom styles for PRD Breakdown Execute docs
+
+// Hero section
+.hero {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e3a5f 100%);
+  padding: 4rem 2rem;
+  margin: -2rem -2rem 2rem -2rem;
+  border-radius: 0 0 1rem 1rem;
+  text-align: center;
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, #a78bfa, #60a5fa, #34d399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .tagline {
+    font-size: 1.25rem;
+    color: #94a3b8;
+    margin-bottom: 2rem;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    a {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    .primary {
+      background: linear-gradient(90deg, #7c3aed, #2563eb);
+      color: white;
+    }
+
+    .secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+// Feature cards
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.feature-card {
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: border-color 0.2s, transform 0.2s;
+
+  &:hover {
+    border-color: rgba(139, 92, 246, 0.5);
+    transform: translateY(-2px);
+  }
+
+  .icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  h3 {
+    color: #e2e8f0;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+}
+
+// ASCII art styling
+.ascii-art {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: #94a3b8;
+
+  .highlight {
+    color: #a78bfa;
+  }
+
+  .success {
+    color: #4ade80;
+  }
+
+  .info {
+    color: #60a5fa;
+  }
+}
+
+// Workflow diagrams
+.workflow-diagram {
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.3) 0%, rgba(15, 23, 42, 0.5) 100%);
+  border: 1px solid #334155;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  margin: 1.5rem 0;
+  text-align: center;
+
+  .step {
+    display: inline-block;
+    background: rgba(99, 102, 241, 0.2);
+    border: 1px solid #6366f1;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    margin: 0.5rem;
+    color: #c7d2fe;
+    font-weight: 500;
+  }
+
+  .arrow {
+    color: #4ade80;
+    font-size: 1.5rem;
+    margin: 0 0.5rem;
+  }
+}
+
+// Table styling improvements
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+
+  th {
+    background: rgba(99, 102, 241, 0.2);
+    border: 1px solid #334155;
+    padding: 0.75rem;
+    text-align: left;
+    color: #e2e8f0;
+  }
+
+  td {
+    border: 1px solid #334155;
+    padding: 0.75rem;
+    color: #cbd5e1;
+  }
+
+  tr:nth-child(even) {
+    background: rgba(30, 41, 59, 0.3);
+  }
+}
+
+// Code highlighting improvements
+.highlight {
+  pre {
+    background: #0f172a !important;
+    border: 1px solid #334155;
+    border-radius: 0.5rem;
+    padding: 1rem;
+  }
+}
+
+// Badge styling
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+
+  &.greenfield {
+    background: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+
+  &.brownfield {
+    background: rgba(251, 146, 60, 0.2);
+    color: #fb923c;
+    border: 1px solid rgba(251, 146, 60, 0.3);
+  }
+
+  &.new {
+    background: rgba(99, 102, 241, 0.2);
+    color: #a5b4fc;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+  }
+}
+
+// Layer visualization
+.layer-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+
+  .layer {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    border-left: 4px solid;
+    background: rgba(30, 41, 59, 0.5);
+
+    .layer-num {
+      font-weight: bold;
+      min-width: 3rem;
+      color: inherit;
+    }
+
+    .layer-name {
+      flex: 1;
+      color: #e2e8f0;
+    }
+
+    .layer-desc {
+      color: #94a3b8;
+      font-size: 0.875rem;
+    }
+
+    &.layer-4 { border-color: #f472b6; .layer-num { color: #f472b6; } }
+    &.layer-3 { border-color: #a78bfa; .layer-num { color: #a78bfa; } }
+    &.layer-2 { border-color: #60a5fa; .layer-num { color: #60a5fa; } }
+    &.layer-1 { border-color: #4ade80; .layer-num { color: #4ade80; } }
+    &.layer-0 { border-color: #fbbf24; .layer-num { color: #fbbf24; } }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .hero {
+    padding: 2rem 1rem;
+    margin: -1rem -1rem 1rem -1rem;
+
+    h1 {
+      font-size: 1.75rem;
+    }
+
+    .tagline {
+      font-size: 1rem;
+    }
+  }
+
+  .features {
+    grid-template-columns: 1fr;
+  }
+}

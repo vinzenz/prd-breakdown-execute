@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#7c3aed"/>
+      <stop offset="50%" style="stop-color:#2563eb"/>
+      <stop offset="100%" style="stop-color:#06b6d4"/>
+    </linearGradient>
+  </defs>
+  <text x="5" y="35" font-family="monospace" font-size="16" font-weight="bold" fill="url(#gradient)">PRD</text>
+  <text x="45" y="35" font-family="monospace" font-size="12" fill="#94a3b8">Breakdown</text>
+  <text x="115" y="35" font-family="monospace" font-size="12" fill="#94a3b8">Execute</text>
+  <path d="M42 25 L44 25" stroke="#4ade80" stroke-width="2"/>
+  <path d="M112 25 L114 25" stroke="#4ade80" stroke-width="2"/>
+</svg>
